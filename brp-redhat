@@ -12,4 +12,4 @@
 # Strip even more sections (Red Hat uses GNU binutils).
 /usr/lib/rpm/clr/brp-strip-comment-note
 
-/usr/lib/rpm/brp-python-bytecompile
+/usr/lib/rpm/clr/brp-python-bytecompile
