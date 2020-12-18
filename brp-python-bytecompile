@@ -73,7 +73,7 @@ function python_bytecompile()
 		# -x and -e together implements the same functionality as the Filter class below
 		# -s strips $RPM_BUILD_ROOT from the path
 		# -p prepends the leading slash to the path to make it absolute
-		PYTHONPATH=/usr/lib/rpm/clr/ $python_binary -B $options -m compileall2 -q -f $exclude -s $RPM_BUILD_ROOT -p / -e $RPM_BUILD_ROOT $python_libdir
+		$python_binary -B $options -m compileall2 -q -f $exclude -s $RPM_BUILD_ROOT -p / -e $RPM_BUILD_ROOT $python_libdir
 	else
 #
 # Python 3.3 and lower (incl. Python 2)
@@ -119,7 +119,7 @@ fi
 export PYTHONHASHSEED=0
 
 shopt -s nullglob
-for python_libdir in `find "$RPM_BUILD_ROOT" -type d|grep -E "/usr/lib(64)?/python[0-9]\.[0-9]+$"`;
+for python_libdir in `find "$RPM_BUILD_ROOT" -type d|grep -E "/(usr|app)/lib(64)?/python[0-9]\.[0-9]+$"`;
 do
 	python_binary=/usr/bin/$(basename $python_libdir)
 	real_libdir=${python_libdir/$RPM_BUILD_ROOT/}
