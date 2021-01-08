@@ -229,9 +229,8 @@
 	INSTALL_ROOT=%{?buildroot:%{buildroot}} \\\
   install %*
 
-# /usr/bin/tclsh build.tcl install %{?buildroot:%{buildroot}}%{?_tcl_auto_path:%{_tcl_auto_path}} %*
 %buildtcl_script_install_command() \
-  /usr/bin/tclsh build.tcl install %{?buildroot:%{buildroot}}/usr/lib64 %*
+  /usr/bin/tclsh build.tcl install %{?buildroot:%{buildroot}}%{?_tcl_auto_path:%{_tcl_auto_path}} %*
 
 %make_install_common() \
   rm -f %{?buildroot:%{buildroot}}/usr/share/info/dir \
