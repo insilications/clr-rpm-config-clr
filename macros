@@ -201,8 +201,37 @@
 	ninja --verbose %{?_smp_mflags} \\\
   install %*
 
-%buildtcl_install_command() \
-  tclsh build.tcl %{?buildroot:%{buildroot}}/%{?_tcl_auto_path} %*
+%configure_buildtcl \
+  ./configure --build=%{_build} --host=%{_host} \\\
+	--target=%{_target_platform} \\\
+	--program-prefix=%{?_program_prefix} \\\
+	--prefix=%{_prefix} \\\
+	--exec-prefix=%{_exec_prefix} \\\
+	--bindir=%{_bindir} \\\
+	--sbindir=%{_bindir} \\\
+	--sysconfdir=%{_sysconfdir} \\\
+	--datadir=%{_datadir} \\\
+	--includedir=%{_includedir} \\\
+	--libdir=%{_libdir} \\\
+	--libexecdir=%{_libexecdir} \\\
+	--localstatedir=%{_localstatedir} \\\
+	--sharedstatedir=%{_sharedstatedir} \\\
+	--mandir=%{_mandir} \\\
+	--infodir=%{_infodir}
+
+%buildtcl_configure_install_command() \
+  make %{?_smp_mflags} \\\
+	DESTDIR=%{?buildroot:%{buildroot}} \\\
+	INSTALLROOT=%{?buildroot:%{buildroot}} \\\
+	install_prefix=%{?buildroot:%{buildroot}} \\\
+	BUILDROOT=%{?buildroot:%{buildroot}} \\\
+	BUILD_ROOT=%{?buildroot:%{buildroot}} \\\
+	INSTALL_ROOT=%{?buildroot:%{buildroot}} \\\
+  install %*
+
+# /usr/bin/tclsh build.tcl install %{?buildroot:%{buildroot}}%{?_tcl_auto_path:%{_tcl_auto_path}} %*
+%buildtcl_script_install_command() \
+  /usr/bin/tclsh build.tcl install %{?buildroot:%{buildroot}}/usr/lib64 %*
 
 %make_install_common() \
   rm -f %{?buildroot:%{buildroot}}/usr/share/info/dir \
@@ -232,8 +261,13 @@
   %{!?keepstatic:find %{?buildroot:%{buildroot}} -regex ".*\\.la$" | xargs rm -f --}   \
   %{!?keepstatic:find %{?buildroot:%{buildroot}} -regex ".*\\.a$" | xargs rm -f --}
 
-%buildtcl_install() \
-  %{buildtcl_install_command} %* \
+%buildtcl_configure_install() \
+  %{buildtcl_configure_install_command} %* \
+  %{make_install_common} \
+  find %{?buildroot:%{buildroot}}/ -print0 | xargs -r0 touch -h -d "@${SOURCE_DATE_EPOCH:-1549052798 }" || :
+
+%buildtcl_script_install() \
+  %{buildtcl_script_install_command} %* \
   %{make_install_common} \
   find %{?buildroot:%{buildroot}}/ -print0 | xargs -r0 touch -h -d "@${SOURCE_DATE_EPOCH:-1549052798 }" || :
 
@@ -380,7 +414,9 @@
 	[ "$RPM_BUILD_NCPUS" -gt 1 ] && echo "-j$RPM_BUILD_NCPUS")
 
 %_tcl_auto_path %(TCL_AUTO_PATH="`/usr/bin/tclsh /usr/lib/rpm/clr/auto_path.tcl`"; \\\
-	echo "TCL_AUTO_PATH")
+	echo "$TCL_AUTO_PATH")
+
+%tcl_lib_path %{?buildroot:%{buildroot}}%{?_tcl_auto_path:%{_tcl_auto_path}}
 
 %install_info(:-:) \
         ALL_ARGS=(%{**}) \
