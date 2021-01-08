@@ -212,7 +212,7 @@
 	--sysconfdir=%{_sysconfdir} \\\
 	--datadir=%{_datadir} \\\
 	--includedir=%{_includedir} \\\
-	--libdir=%{_libdir} \\\
+	--libdir=%{?_tcl_auto_path:%{_tcl_auto_path}} \\\
 	--libexecdir=%{_libexecdir} \\\
 	--localstatedir=%{_localstatedir} \\\
 	--sharedstatedir=%{_sharedstatedir} \\\
