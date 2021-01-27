@@ -220,7 +220,7 @@
   install
 
 %make_install_command() \
-  %{__make} %{?_smp_mflags} \\\
+  %{__make} %{?_smp_mflags:%{_smp_mflags}} \\\
 	DESTDIR=%{?buildroot:%{buildroot}} \\\
 	INSTALLROOT=%{?buildroot:%{buildroot}} \\\
 	install_prefix=%{?buildroot:%{buildroot}} \\\
@@ -236,7 +236,7 @@
 	BUILDROOT=%{?buildroot:%{buildroot}} \\\
 	BUILD_ROOT=%{?buildroot:%{buildroot}} \\\
 	INSTALL_ROOT=%{?buildroot:%{buildroot}} \\\
-	ninja --verbose %{?_smp_mflags} \\\
+	ninja --verbose %{?_smp_mflags:%{_smp_mflags}} \\\
   install %*
 
 %configure_buildtcl \
@@ -258,7 +258,7 @@
 	--infodir=%{_infodir}
 
 %buildtcl_configure_install_command() \
-  make %{?_smp_mflags} \\\
+  make %{?_smp_mflags:%{_smp_mflags}} \\\
 	DESTDIR=%{?buildroot:%{buildroot}} \\\
 	INSTALLROOT=%{?buildroot:%{buildroot}} \\\
 	install_prefix=%{?buildroot:%{buildroot}} \\\
@@ -352,7 +352,7 @@
 	BUILDROOT=%{?buildroot:%{buildroot}} \\\
 	BUILD_ROOT=%{?buildroot:%{buildroot}} \\\
 	INSTALL_ROOT=%{?buildroot:%{buildroot}} \\\
-	ninja --verbose %{?_smp_mflags} \\\
+	ninja --verbose %{?_smp_mflags:%{_smp_mflags}} \\\
   install %* \
   rm -f %{?buildroot:%{buildroot}}/usr/share/info/dir \
   rm -f %{?buildroot:%{buildroot}}/usr/lib/perl5/*/*/perllocal.pod \
