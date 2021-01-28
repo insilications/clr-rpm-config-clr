@@ -48,6 +48,8 @@
     diff -u $file.backup $file && mv $file.backup $file \
   done
 
+%_disable_maintainer_mode "--disable-maintainer-mode"
+
   %_smp_mflags %([ -z "$RPM_BUILD_NCPUS" ] \\\
 	&& RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"; \\\
 	[ "$RPM_BUILD_NCPUS" -gt 1 ] && echo "-j$RPM_BUILD_NCPUS")
@@ -117,7 +119,7 @@
 	--sharedstatedir=%{_sharedstatedir} \\\
 	--mandir=%{_mandir} \\\
 	--infodir=%{_infodir} \\\
-	--disable-maintainer-mode
+	[ "%{_maintainer_mode}"x != x ] && %{_disable_maintainer_mode}
 
 %autogen \
   CFLAGS="$CFLAGS" ; export CFLAGS ; \
@@ -147,7 +149,7 @@
 	--sharedstatedir=%{_sharedstatedir} \\\
 	--mandir=%{_mandir} \\\
 	--infodir=%{_infodir} \\\
-	--disable-maintainer-mode || : \
+	[ "%{_maintainer_mode}"x != x ] && %{_disable_maintainer_mode} || : \
   [ "%{_lto_cflags}"x != x ] && %{_fix_broken_configure_for_lto}; \
   ./configure --build=%{_build} --host=%{_host} \\\
 	--target=%{_target_platform} \\\
@@ -165,8 +167,7 @@
 	--sharedstatedir=%{_sharedstatedir} \\\
 	--mandir=%{_mandir} \\\
 	--infodir=%{_infodir} \\\
-	--disable-maintainer-mode
-
+	[ "%{_maintainer_mode}"x != x ] && %{_disable_maintainer_mode}
 
 %waf \
   CFLAGS="$CFLAGS" ; export CFLAGS ; \
