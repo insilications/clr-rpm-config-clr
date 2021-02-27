@@ -214,7 +214,6 @@
   scons config \\\
     --prefix==%{_prefix} \\\
     --libdir=%{_lib} \\\
-    --install-sandbox=%{?buildroot:%{buildroot}}
 
 %scons_install \
   scons install \\\
