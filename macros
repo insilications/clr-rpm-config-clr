@@ -218,8 +218,7 @@
 %scons_install \
   scons install \\\
     --prefix=%{_prefix} \\\
-    --libdir=%{_lib} \\\
-    --install-sandbox=%{?buildroot:%{buildroot}}
+    --libdir=%{_lib}
 
 %makeinstall \
   %{__make} \\\
