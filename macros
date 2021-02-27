@@ -213,13 +213,13 @@
 %scons_config \
   scons \\\
     --prefix=%{_prefix} \\\
-    --libdir=%{_lib} config
+    --libdir=%{_lib}
 
 %scons_install \
   scons \\\
     --prefix=%{_prefix} \\\
     --libdir=%{_lib} \\\
-    --install-sandbox=%{?buildroot:%{buildroot}} install
+    --install-sandbox=%{?buildroot:%{buildroot}}
 
 %makeinstall \
   %{__make} \\\
