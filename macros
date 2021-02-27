@@ -211,15 +211,15 @@
       QMAKE_CXXFLAGS_RELEASE=
 
 %scons_config \
-  scons config \\\
+  scons \\\
     --prefix=%{_prefix} \\\
-    --libdir=%{_lib} \\\
+    --libdir=%{_lib} config
 
 %scons_install \
-  scons install \\\
+  scons \\\
     --prefix=%{_prefix} \\\
     --libdir=%{_lib} \\\
-    --install-sandbox=%{?buildroot:%{buildroot}}
+    --install-sandbox=%{?buildroot:%{buildroot}} install
 
 %makeinstall \
   %{__make} \\\
